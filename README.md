@@ -2,6 +2,10 @@
 
 
 
+
+
+
+
 <div align="center">
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JavaScript Logo" width="100" />
@@ -13,7 +17,7 @@
 <!-- DO NOT REMOVE THE COMMENTS BELOW. THEY ARE USED BY GITHUB ACTIONS TO AUTO-UPDATE THE COUNTS -->
 
 <!-- QUESTIONS_COUNT:START -->
-<img src="https://img.shields.io/badge/Questions_Solved-0-blue?style=for-the-badge" alt="Questions Count" />
+<img src="https://img.shields.io/badge/Questions_Solved-2-blue?style=for-the-badge" alt="Questions Count" />
 <!-- QUESTIONS_COUNT:END -->
 &nbsp;
 <!-- PROJECTS_COUNT:START -->
