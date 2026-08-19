@@ -1,0 +1,47 @@
+PROJECT: NodeBiz Dashboard API — FINAL PROJECT (pro-final-nodebiz)
+===================================================================
+
+WHAT TO BUILD:
+  Combine all 4 previous modules into a single cohesive API.
+  NodeBiz is a business dashboard backend that:
+    1. Accepts raw transaction payloads from multiple payment sources.
+    2. Normalizes them into a unified schema (pro-2).
+    3. Applies RBAC-based field masking based on the viewer's role (pro-3).
+    4. Produces analytics reports: pivot tables, running totals, daily summaries (pro-4).
+    5. Streams large datasets lazily to avoid memory issues (ques-18).
+    6. Safely serializes all records to JSON for logging/audit (ques-20).
+    7. Caches expensive report results in an LRU cache (ques-13).
+    8. Uses a compose pipeline to wire all transforms together (pro-1).
+
+FUNCTIONS TO IMPLEMENT:
+  createPipeline(role)          — returns a composed fn: raw → normalize → mask → aggregate
+  processTransactions(batch, role) — run a batch through the full pipeline
+  generateReport(records, type)    — "pivot" | "daily" | "summary" | "running-total"
+  streamLargeDataset(source)       — generator that yields normalized records lazily
+  logAuditTrail(before, after)     — deepDiff + safeStringify to record changes
+
+EXPECTED RESULT:
+  Input:  { rawBatch: [...razorpay payloads], role: "analyst" }
+
+  Output from processTransactions:
+  {
+    normalized: [...canonical records, PII removed for analyst],
+    report: {
+      pivot:        { INR: { success: 12000, failed: 800 }, ... },
+      runningTotal: [{..., runningTotal: 4500}, ...],
+      summary:      { total: 12800, average: 1600, min: 250, max: 4500, count: 8 }
+    }
+  }
+
+PREREQUISITE QUESTIONS & PROJECTS:
+  ALL previous questions (ques-3 through ques-22)
+  ALL previous projects (pro-1 through pro-4)
+
+  Critical final pieces:
+  ques-18 (generators — stream large datasets)
+  ques-20 (safe JSON — audit log serialization)
+
+THIS IS THE CAPSTONE:
+  Once you have implemented and tested all 4 modules individually,
+  this project just wires them together with pipe/compose.
+  The bulk of the work is already done in pro-1 through pro-4.

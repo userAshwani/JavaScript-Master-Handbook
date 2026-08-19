@@ -1,0 +1,44 @@
+PROJECT: Data Normalizer (pro-2-data-normalizer)
+=================================================
+
+WHAT TO BUILD:
+  A module that accepts raw transaction payloads from 3 different payment
+  sources (Razorpay, Bank Transfer, UPI) — each with a completely different
+  field structure — and converts all of them into one unified schema.
+  This is the "Extract + Transform" part of an ETL pipeline.
+
+FUNCTIONS TO IMPLEMENT:
+  razorpayAdapter(raw)           — maps Razorpay API fields to canonical schema
+  bankTransferAdapter(raw)       — maps NEFT/IMPS/RTGS fields to canonical schema
+  upiAdapter(raw)                — maps UPI fields to canonical schema
+  normalizeSchema(raw, source)   — dispatches to the right adapter
+  normalizeBatch(arr, source)    — processes a full array of raw payloads
+  validateRecord(record)         — confirms output conforms to canonical schema
+
+CANONICAL OUTPUT SCHEMA:
+  {
+    id:        string    — unique transaction ID
+    amount:    number    — always in major units (INR, not paise)
+    currency:  string    — "INR", "USD"
+    status:    string    — "success" | "failed" | "pending"
+    timestamp: string    — ISO 8601 e.g. "2026-08-19T00:00:00.000Z"
+    source:    string    — "razorpay" | "bank_transfer" | "upi"
+    meta:      object    — extra source-specific data (contact, sender, etc.)
+  }
+
+SAMPLE INPUT (Razorpay):
+  { razorpay_payment_id:"pay_001", amount_paise:450075, status:"captured",
+    created_at:1724044800, contact:"9876543210", email:"a@b.com" }
+
+EXPECTED OUTPUT:
+  { id:"pay_001", amount:4500.75, currency:"INR", status:"success",
+    timestamp:"2026-08-19T00:00:00.000Z", source:"razorpay",
+    meta:{ contact:"9876543210", email:"a@b.com" } }
+
+PREREQUISITE QUESTIONS:
+  ques-1 (deepClone), ques-7 (normalize adapter), ques-8 (permission tree),
+  ques-9 (deepDiff for validation), ques-10 (promise limit — for batching API calls)
+
+HOW IT CONNECTS TO THE FINAL PROJECT:
+  Every record entering the system passes through this normalizer first.
+  The RBAC engine and analytics engine both expect canonically shaped records.

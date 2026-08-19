@@ -1,0 +1,31 @@
+PROJECT: Data Utility Belt (pro-1-data-utils)
+==============================================
+
+WHAT TO BUILD:
+  A reusable JavaScript utility module — a collection of core helper
+  functions that every other project in this series will import and use.
+  Think of it as your personal lodash, built from scratch.
+
+FUNCTIONS TO IMPLEMENT:
+  deepClone(value)              — recursive deep copy of any value
+  flattenObject(obj, prefix)    — nested keys → dot-notation flat object
+  flattenArray(arr)             — nested arrays → single flat array
+  pipe(...fns)                  — left-to-right function composition
+  compose(...fns)               — right-to-left function composition
+  memoize(fn, ttlMs)            — cache function results with TTL expiry
+  curry(fn)                     — convert multi-arg fn into chained single-arg fns
+  partial(fn, ...args)          — pre-fill arguments from the left
+
+EXPECTED RESULT:
+  Input to pipe:    pipe(double, addTen)(3)          → 16
+  Input to memoize: memoize(expensiveFn)(a, b)       → cached on repeat call
+  Input to flatten: flattenObject({ a: { b: 1 } })   → { "a.b": 1 }
+  All functions exported from index.js as a module.
+
+PREREQUISITE QUESTIONS:
+  ques-1 (deepClone), ques-2 (flatten), ques-3 (groupBy),
+  ques-4 (pipe/compose), ques-5 (memoize), ques-6 (curry)
+
+HOW IT CONNECTS TO THE FINAL PROJECT:
+  Every other project (normalizer, RBAC, analytics) imports these utils.
+  This is the foundation layer — build it solid before moving on.

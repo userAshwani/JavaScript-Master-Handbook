@@ -1,0 +1,39 @@
+PROJECT: RBAC Engine (pro-3-rbac-engine)
+=========================================
+
+WHAT TO BUILD:
+  A Role-Based Access Control module that:
+  1. Resolves what permissions a role has (including inherited permissions).
+  2. Filters and masks record fields based on the viewer's role before
+     the data leaves the system.
+  Used to ensure analysts see amounts but not PII, viewers see masked data,
+  and admins see everything unmasked.
+
+ROLES TO SUPPORT:
+  viewer         → sees: id, status, amount (masked as "****")
+  analyst        → sees: id, amount, currency, status, timestamp (no PII)
+  senior-analyst → sees: all fields + meta (email/phone masked)
+  admin          → sees: everything, nothing masked
+
+FUNCTIONS TO IMPLEMENT:
+  resolvePermissions(roleTree, roleName)    — return flat Set of all permissions
+                                              including inherited ones
+  hasPermission(roleTree, roleName, perm)   — true/false check
+  maskEmail(email)                          — "a@b.com" → "a****@b.com"
+  maskPhone(phone)                          — "9876543210" → "98****3210"
+  applyRBAC(record, role)                   — filter fields + apply masking
+  maskBatch(records, role)                  — process array of records
+
+EXPECTED RESULT:
+  Admin input:  { id:"T1", amount:4500, email:"a@b.com", status:"success" }
+  Admin output: { id:"T1", amount:4500, email:"a@b.com", status:"success" }
+
+  Viewer output: { id:"T1", amount:"****", status:"success" }
+
+PREREQUISITE QUESTIONS:
+  ques-8 (permission-tree), ques-11 (LRU cache — cache resolved permissions),
+  ques-12 (Trie — search transactions by ID), ques-13 (field-masking)
+
+HOW IT CONNECTS TO THE FINAL PROJECT:
+  Sits between the normalizer and the analytics engine. Every record is
+  filtered through applyRBAC before being sent to any consumer.

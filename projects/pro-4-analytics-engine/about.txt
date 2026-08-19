@@ -1,0 +1,37 @@
+PROJECT: Analytics Engine (pro-4-analytics-engine)
+===================================================
+
+WHAT TO BUILD:
+  A module that takes normalized, RBAC-filtered records and produces
+  analytics outputs: pivot tables, running totals, time-series charts,
+  and sorted reports. Also includes an event system so other modules
+  can react to analytics events, and a rate limiter for external API calls.
+
+FUNCTIONS TO IMPLEMENT:
+  groupBy(records, ...keys)                       — multi-key grouping
+  pivotTable(records, rowKey, colKey, valueKey)   — 2D aggregation table
+  runningTotal(records, key)                      — cumulative sum per record
+  slidingWindowAvg(records, key, windowSize)      — moving average array
+  dailyAggregate(records, dateKey, valueKey)      — totals grouped by day
+  multiKeySort(records, sortConfig)               — priority-ordered pure sort
+  summarize(records, key)                         — { total, avg, min, max, count }
+
+ALSO BUILD:
+  EventEmitter class  — used for reactive analytics updates (e.g. "new-high-value-txn")
+  RateLimiter class   — throttle outgoing API calls (e.g. currency exchange rates)
+
+EXPECTED RESULT:
+  Input: flat array of normalized transaction records
+  pivotTable(data, "currency", "status", "amount", sum)
+  → { INR: { success: 5700, failed: 800 }, USD: { success: 300 } }
+
+  runningTotal(data, "amount")
+  → [{..., runningTotal: 1000}, {..., runningTotal: 3000}, ...]
+
+PREREQUISITE QUESTIONS:
+  ques-3 (groupBy), ques-14 (EventEmitter), ques-15 (RateLimiter),
+  ques-16 (pivotTable), ques-17 (runningTotals), ques-18 (multiSort)
+
+HOW IT CONNECTS TO THE FINAL PROJECT:
+  This is the "reporting layer" of NodeBiz. Produces all chart data,
+  report tables, and summary cards displayed on the dashboard.
