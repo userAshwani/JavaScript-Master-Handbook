@@ -3,7 +3,22 @@
 // Example: chunkArray([1,2,3,4,5], 2) => [[1,2],[3,4],[5]]
 
 function chunkArray(arr, size) {
-    // your code here
+  // 1. Create the empty container to hold all our smaller chunks
+  const masterArray = [];
+
+  // 2. Loop through the array, jumping forward by 'size' instead of 1
+  for (let i = 0; i < arr.length; i += size) {
+    
+    // 3. Slice the current chunk. 
+    // It starts at our current index 'i' and ends at 'i + size'
+    const chunk = arr.slice(i, i + size);
+
+    // 4. Push the new chunk into our master container
+    masterArray.push(chunk);
+  }
+
+  // 5. Return the final nested array
+  return masterArray;
 }
 
 // ---- Run this file to check your answer ----
